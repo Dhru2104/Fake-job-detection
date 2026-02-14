@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fake Job Detector</title>
+    <!-- CSS is in /static/styles.css -->
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="topbar">
+            <div class="brand">
+                <div class="logo"></div>
+                <div>
+                    <h1>Fake Job Detector</h1>
+                </div>
+            </div>
+            <div class="pill"><span class="dot"></span> Ready (offline)</div>
+        </div>
+
+        <div class="hero">
+            <div class="card main">
+                <div class="title">
+                    <div>
+                        <h2>Analyze a job post</h2>
+                        <p class="subtitle">
+                            Paste a job post to get an instant Scam-Risk score.
+                            Helps you spot suspicious listings before you apply or share personal details.
+                        </p>
+                    </div>
+
+                    <div class="actions">
+                        <button class="btn" id="demoBtn" type="button">Use demo text</button>
+                        <button class="btn" id="clearBtn" type="button">Clear</button>
+                        <button class="btn primary btn-predict" id="predictBtn" type="button">Predict</button>
+
+                    </div>
+
+                </div>
+
+                <div class="grid">
+                    <div class="textareaWrap">
+                        <textarea id="txt" placeholder="Paste job post text here..."></textarea>
+                        <div class="counter">
+                            <span id="count">0 chars</span>
+                            <span>•</span>
+                            <span id="status">Waiting</span>
+                        </div>
+                    </div>
+
+                    <div class="hint">
+                        Tip: include salary/benefits lines + contact method + requirements. More text usually = better
+                        signal.
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <span>✓ Scam-Risk Score updates instantly</span>
+                    <span>ⓘ Verify employers via official sites</span>
+                </div>
+
+
+            </div>
+
+            <div class="card side">
+                <div class="result" id="resultCard">
+                    <div class="badge" id="badge">No prediction yet</div>
+                    <div class="verdict" id="verdict">—</div>
+                    <div class="meta">
+                        <span>Prob(fake): <b id="prob">—</b></span>
+                        <span>•</span>
+                        <span>Label: <b id="label">—</b></span>
+                    </div>
+
+                    <div class="bar">
+                        <div class="fill" id="fill"></div>
+                    </div>
+
+                    <div class="hint" id="explain">
+                        Paste text and click <b>Predict</b>.
+                    </div>
+                </div>
+
+                <div class="tips">
+                    <b>Common red flags</b>
+                    <ul>
+                        <li>“Easy money”, “no experience”, “urgent hire” spammy tone</li>
+                        <li>Asks for fees, deposits, or personal banking info</li>
+                        <li>Only WhatsApp/Telegram contact + no company trace</li>
+                        <li>Unrealistic salary for minimal requirements</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+  const txt = document.getElementById("txt");
+  const count = document.getElementById("count");
+  const statusEl = document.getElementById("status");
+  const predictBtn = document.getElementById("predictBtn");
+  const clearBtn = document.getElementById("clearBtn");
+  const demoBtn = document.getElementById("demoBtn");
+
+  const badge = document.getElementById("badge");
+  const verdict = document.getElementById("verdict");
+  const prob = document.getElementById("prob");
+  const label = document.getElementById("label");
+  const fill = document.getElementById("fill");
+  const explain = document.getElementById("explain");
+
+  const demoText =
+`WORK FROM HOME – EARN DAILY!
+No experience needed. Limited seats. Quick money.
+Contact on WhatsApp/Telegram for onboarding.
+Pay a small registration fee to activate your account.`;
+
+  function fmt(p) { return (p * 100).toFixed(1) + "%"; }
+  function setStatus(s) { statusEl.textContent = s; }
+
+  function updateCount() {
+    count.textContent = `${txt.value.length} chars`;
+  }
+  txt.addEventListener("input", updateCount);
+  updateCount();
+
+  clearBtn.onclick = () => {
+    txt.value = "";
+    updateCount();
+    setStatus("Waiting");
+    badge.textContent = "No prediction yet";
+    verdict.textContent = "—";
+    prob.textContent = "—";
+    label.textContent = "—";
+    fill.style.width = "0%";
+    explain.innerHTML = `Paste text and click <b>Predict</b>.`;
+  };
+
+  demoBtn.onclick = () => {
+    txt.value = demoText;
+    updateCount();
+    setStatus("Demo loaded");
+  };
+
+  predictBtn.onclick = async () => {
+    const text = txt.value.trim();
+    if (!text) {
+      setStatus("Paste text first");
+      alert("Paste a job post first.");
+      return;
+    }
+
+    predictBtn.disabled = true;
+    setStatus("Analyzing...");
+
+    try {
+      // 1) Get model probability from backend
+      const res = await fetch("/predict", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Request failed");
+
+      const p = Number(data.prob_fake); // model prob(fake)
+
+      // 2) Rule-based boosts for UI
+      let risk = p;
+      const t = text.toLowerCase();
+      const reasons = [];
+
+      // ID request rule
+      const idWords = ["aadhaar", "aadhar", "pan", "passport", "driving license", "voter id"];
+      if (idWords.some(w => t.includes(w))) {
+        risk += 0.30;
+        reasons.push("Requests Aadhaar/PAN or other ID details — legitimate employers do not ask for sensitive IDs before an offer.");
+      }
+
+      // WhatsApp/Telegram rule
+      if (t.includes("whatsapp") || t.includes("telegram")) {
+        risk += 0.10;
+        reasons.push("WhatsApp/Telegram hiring is off-platform — legitimate employers usually collect CVs via official email or career portals.");
+      }
+
+      // Fee/payment rule (optional but useful)
+      const feeWords = ["fee", "registration fee", "processing fee", "deposit", "refundable", "payment", "upi"];
+      if (feeWords.some(w => t.includes(w))) {
+        risk += 0.30;
+        reasons.push("Mentions fees/deposits/payments — genuine hiring does not require candidates to pay.");
+      }
+
+      risk = Math.min(1, risk);
+
+      // 3) Update UI with FINAL risk
+      prob.textContent = fmt(risk);
+      fill.style.width = Math.max(2, Math.min(98, risk * 100)) + "%";
+
+      let statusValue = "LIKELY_REAL";
+      let uiMessage = "";
+
+      if (risk >= 0.65) {
+        statusValue = "LIKELY_FAKE";
+        badge.textContent = "High risk detected";
+        verdict.textContent = "Likely Fake";
+        label.textContent = "FAKE";
+        uiMessage = "High scam-risk signals detected. Avoid sharing documents or payments until verified.";
+        explain.innerHTML = uiMessage;
+      } else if (risk >= 0.35) {
+        statusValue = "BORDERLINE";
+        badge.textContent = "Needs verification";
+        verdict.textContent = "Borderline";
+        label.textContent = "CHECK";
+        uiMessage = "Mixed signals. Verify company domain and recruiter identity. Avoid off-platform hiring.";
+
+        const reasonHtml = reasons.length
+          ? `<div class="reasons">
+               <div class="reasons-title">Why this was flagged</div>
+               <ul>${reasons.map(r => `<li>${r}</li>`).join("")}</ul>
+             </div>`
+          : "";
+
+        explain.innerHTML = `${uiMessage}${reasonHtml}`;
+      } else {
+        statusValue = "LIKELY_REAL";
+        badge.textContent = "Low risk signal";
+        verdict.textContent = "Likely Real";
+        label.textContent = "REAL";
+        uiMessage = "Looks more legitimate. Still verify company website, email domain, and role details.";
+        explain.innerHTML = uiMessage;
+      }
+
+      // 4) Save what the UI showed (to SQL Server) via /save
+      await fetch("/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text,
+          status: statusValue,
+          prob_fake: risk,                // store boosted risk (UI score)
+          ui_message: uiMessage,
+          reasons_text: reasons.join("\n")
+        })
+      });
+
+      setStatus("Done ✅");
+    } catch (e) {
+      setStatus("Error");
+      alert(e.message);
+    } finally {
+      predictBtn.disabled = false;
+    }
+  };
+</script>
+
+</body>
+
+</html>
