@@ -1,0 +1,248 @@
+{
+  "aliases": {
+    "ms excel": "excel",
+    "microsoft excel": "excel",
+    "google sheets": "excel",
+    "sheets": "excel",
+    "power bi": "powerbi",
+    "pbi": "powerbi",
+    "reactjs": "react",
+    "react.js": "react",
+    "nodejs": "node",
+    "node.js": "node",
+    "js": "javascript",
+    "pm": "per month",
+    "p.m.": "per month",
+    "ms office": "ms office",
+    "follow-ups": "follow ups",
+    "follow up": "follow ups",
+    "cold-calling": "cold calling",
+    "tele calling": "telecalling",
+    "crm tools": "crm"
+  },
+  "roles": [
+    {
+      "name": "Data Analyst Intern",
+      "keywords": [
+        "data analyst intern",
+        "analytics intern",
+        "bi intern",
+        "data intern"
+      ],
+      "skills": [
+        "excel",
+        "sql",
+        "powerbi",
+        "tableau",
+        "python",
+        "dashboard",
+        "reporting"
+      ]
+    },
+    {
+      "name": "Data Analyst",
+      "keywords": [
+        "data analyst",
+        "bi analyst",
+        "reporting analyst"
+      ],
+      "skills": [
+        "sql",
+        "excel",
+        "powerbi",
+        "python",
+        "statistics",
+        "etl",
+        "reporting"
+      ]
+    },
+    {
+      "name": "Web Developer Intern",
+      "keywords": [
+        "web developer intern",
+        "frontend intern",
+        "full stack intern",
+        "web intern"
+      ],
+      "skills": [
+        "html",
+        "css",
+        "javascript",
+        "git",
+        "apis"
+      ]
+    },
+    {
+      "name": "Software Intern",
+      "keywords": [
+        "software intern",
+        "developer intern",
+        "engineering intern"
+      ],
+      "skills": [
+        "python",
+        "java",
+        "javascript",
+        "git",
+        "oops",
+        "apis"
+      ]
+    },
+    {
+      "name": "Frontend Developer",
+      "keywords": [
+        "frontend developer",
+        "front-end developer"
+      ],
+      "skills": [
+        "html",
+        "css",
+        "javascript",
+        "react",
+        "ui",
+        "responsive"
+      ]
+    },
+    {
+      "name": "HR",
+      "keywords": [
+        "hr",
+        "human resources",
+        "talent acquisition",
+        "recruitment"
+      ],
+      "skills": [
+        "recruitment",
+        "screening",
+        "communication",
+        "coordination",
+        "interviews",
+        "excel"
+      ]
+    },
+    {
+      "name": "Backend Developer",
+      "keywords": [
+        "backend developer",
+        "back-end developer"
+      ],
+      "skills": [
+        "apis",
+        "sql",
+        "kubernetes",
+        "aws",
+        "devops",
+        "penetration testing",
+        "kali linux",
+        "blockchain",
+        "swift",
+        "databases",
+        "authentication",
+        "python",
+        "java",
+        "node"
+      ]
+    },
+    {
+      "name": "HR Intern",
+      "keywords": [
+        "hr intern",
+        "recruitment intern",
+        "talent acquisition intern"
+      ],
+      "skills": [
+        "communication",
+        "recruitment",
+        "screening",
+        "coordination",
+        "excel"
+      ]
+    },
+    {
+      "name": "Customer Support",
+      "keywords": [
+        "customer support",
+        "customer service",
+        "support executive",
+        "chat support",
+        "email support",
+        "voice process"
+      ],
+      "skills": [
+        "customer support",
+        "crm",
+        "communication",
+        "email support",
+        "chat support",
+        "ticketing",
+        "customer handling"
+      ]
+    },
+    {
+      "name": "Sales",
+      "keywords": [
+        "sales",
+        "sales associate",
+        "sales executive",
+        "business development",
+        "bde",
+        "bd executive",
+        "telecalling",
+        "telesales"
+      ],
+      "skills": [
+        "crm",
+        "lead generation",
+        "cold calling",
+        "targets",
+        "negotiation",
+        "follow ups",
+        "sales",
+        "communication"
+      ]
+    },
+    {
+      "name": "Generic",
+      "keywords": [],
+      "skills": [
+        "communication",
+        "ms office",
+        "excel"
+      ]
+    },
+    {
+      "name": "Customer Support",
+      "keywords": [
+        "customer support",
+        "customer service",
+        "support executive",
+        "chat support",
+        "email support",
+        "voice process"
+      ],
+      "skills": [
+        "customer support",
+        "crm",
+        "communication",
+        "email support",
+        "chat support",
+        "ticketing",
+        "customer handling"
+      ]
+    }
+  ],
+  "salary_role_map": {
+    "Data Analyst Intern": "Data Analyst Intern",
+    "Data Analyst": "Data Analyst",
+    "Web Developer Intern": "Web Developer Intern",
+    "Software Intern": "Software Intern",
+    "Frontend Developer": "Frontend Developer",
+    "Backend Developer": "Backend Developer",
+    "HR Intern": "HR Intern",
+    "Digital Marketing": "Digital Marketing",
+    "Sales": "Sales",
+    "Customer Support": "Customer Support",
+    "Generic": "Generic",
+    "HR": "HR"
+  }
+}

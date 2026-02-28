@@ -1,0 +1,33 @@
+# ---------- secrets ----------
+.env
+
+# ---------- python junk ----------
+__pycache__/
+*.pyc
+
+# ---------- virtual env ----------
+venv/
+.venv/
+
+# ---------- editor/system junk ----------
+.vscode/
+.DS_Store
+desktop.ini
+
+# ---------- generated outputs ----------
+scored_posts.csv
+
+# ---------- graphs output (recommended) ----------
+graphs/
+outputs/
+reports/
+
+# If you save plots as images outside static/, ignore them
+*.png
+*.jpg
+*.jpeg
+
+# But DO keep UI images inside static/
+!static/**/*.png
+!static/**/*.jpg
+!static/**/*.jpeg

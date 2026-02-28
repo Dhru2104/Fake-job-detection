@@ -338,6 +338,219 @@ textarea:focus{
 }
 .tips li{ margin: 6px 0; }
 
+/* =========================
+   INSIGHTS (below hero)
+   ========================= */
+.insights{
+  margin-top: 18px;
+}
+
+.insights-head h3{
+  margin: 0;
+  font-size: 16px;
+}
+
+.insights-head p{
+  margin: 4px 0 0;
+  opacity: .75;
+  font-size: 13px;
+}
+
+.insights-grid{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+@media (max-width: 920px){
+  .insights-grid{ grid-template-columns: 1fr; }
+}
+
+/* =========================
+   MINI CARD (nested panel)
+   Keeps same theme as .card
+   ========================= */
+.mini{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+
+  padding: 14px;
+}
+
+.mini h3{
+  margin: 0 0 10px;
+  font-size: 14px;
+  opacity: 0.95;
+}
+
+
+/* =========================
+   Common rows / lists
+   ========================= */
+.row{
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin: 8px 0;
+  opacity: 0.95;
+}
+
+.reasons{
+  margin: 10px 0 0;
+  padding-left: 18px;
+  opacity: 0.9;
+}
+
+.reasons li{
+  margin: 4px 0;
+}
+
+
+/* =========================
+   Skill chips
+   ========================= */
+.chips{
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 8px 0 10px;
+}
+
+.chips .chip{
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+
+/* =========================
+   Salary header + zone pill
+   ========================= */
+.salary-top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0 12px;
+}
+
+.zone-pill{
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: .3px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.06);
+}
+
+.zone-pill.green{ background: rgba(34,197,94,.12); }
+.zone-pill.yellow{ background: rgba(234,179,8,.12); }
+.zone-pill.red{ background: rgba(239,68,68,.12); }
+
+.salary-label{
+  font-weight: 600;
+  opacity: .9;
+}
+
+/* =========================
+   Bomb Gauge UI
+   ========================= */
+/* ===== Semi-circle gauge (correct zones) ===== */
+/* ===== Salary Gauge (true semicircle, no cropping bugs) ===== */
+
+.bomb-wrap{
+  display:flex;
+  justify-content:center;
+  padding: 10px 0 6px;
+}
+
+.bomb-gauge{
+  --pct: 0;                 /* 0..100 */
+  width: 260px;
+  height: 130px;            /* half of width */
+  position: relative;
+  margin: 0 auto;
+}
+
+/* the colored arc */
+.bomb-arc{
+  width: 260px;
+  height: 130px;
+  border-radius: 260px 260px 0 0;
+  background: conic-gradient(
+  from 180deg at 50% 100%,   /* ✅ center at bottom */
+  #22c55e 0deg 120deg,
+  #eab308 120deg 210deg,
+  #ef4444 210deg 360deg
+);
+
+  position: relative;
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  overflow: hidden;
+}
+
+/* inner cutout to make it ring */
+.bomb-arc::after{
+  content:"";
+  position:absolute;
+  left: 18px;
+  top: 18px;
+  width: calc(100% - 36px);
+  height: calc(100% - 18px);
+  border-radius: 999px 999px 0 0;
+  background: rgba(0,0,0,.25);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+/* needle pivot at bottom center */
+.bomb-pointer{
+  position:absolute;
+  left:50%;
+  bottom: 0px;
+  width: 4px;
+  height: 62px;
+  background: rgba(255,255,255,.9);
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(calc((-90deg) + (var(--pct) * 1.8deg)));
+  border-radius: 2px;
+  z-index: 3;
+}
+
+/* text in center */
+.bomb-center{
+  position:absolute;
+  left:0; right:0;
+  bottom: 18px;
+  text-align:center;
+  z-index: 4;
+}
+
+.bomb-pct{
+  font-size: 26px;
+  font-weight: 800;
+}
+
+
+
+/* band line text BELOW gauge (no overlap) */
+.bandline{
+  margin-top: 6px;
+  font-size: 12px;
+  opacity: .78;
+  text-align:center;
+  line-height: 1.25;
+}
+
+
+
 .footer{
   margin-top: 18px;
   color: var(--muted);

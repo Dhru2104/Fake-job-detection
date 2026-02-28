@@ -1,0 +1,25 @@
+{
+  "Data Analyst Intern": { "market_min": 8000,  "market_max": 15000, "high_end_max": 22000 },
+  "Data Analyst":        { "market_min": 25000, "market_max": 50000, "high_end_max": 80000 },
+
+  "Software Intern":     { "market_min": 8000,  "market_max": 20000, "high_end_max": 30000 },
+  "Software Engineer":   { "market_min": 30000, "market_max": 70000, "high_end_max": 120000 },
+
+  "Frontend Developer":  { "market_min": 25000, "market_max": 65000, "high_end_max": 110000 },
+  "Backend Developer":   { "market_min": 30000, "market_max": 75000, "high_end_max": 130000 },
+
+  "Web Developer Intern":{ "market_min": 7000,  "market_max": 18000, "high_end_max": 28000 },
+  "Web Developer":       { "market_min": 22000, "market_max": 60000, "high_end_max": 100000 },
+
+  "Digital Marketing":   { "market_min": 15000, "market_max": 40000, "high_end_max": 65000 },
+  "HR Intern":           { "market_min": 6000,  "market_max": 12000, "high_end_max": 18000 },
+  "HR":                  { "market_min": 20000, "market_max": 50000, "high_end_max": 80000 },
+
+  "Customer Support":    { "market_min": 12000, "market_max": 30000, "high_end_max": 50000 },
+  "Sales":               { "market_min": 15000, "market_max": 45000, "high_end_max": 90000 },
+
+  "Graphic Designer":    { "market_min": 18000, "market_max": 45000, "high_end_max": 75000 },
+  "UI/UX Designer":      { "market_min": 25000, "market_max": 65000, "high_end_max": 110000 },
+
+  "Generic":             { "market_min": 15000, "market_max": 50000, "high_end_max": 90000 }
+}

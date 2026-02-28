@@ -2,100 +2,146 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Fake Job Detector</title>
-    <!-- CSS is in /static/styles.css -->
-    <link rel="stylesheet" href="/static/styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fake Job Detector</title>
+  <!-- CSS is in /static/styles.css -->
+  <link rel="stylesheet" href="/static/styles.css">
 </head>
 
 <body>
-    <div class="wrap">
-        <div class="topbar">
-            <div class="brand">
-                <div class="logo"></div>
-                <div>
-                    <h1>Fake Job Detector</h1>
-                </div>
-            </div>
-            <div class="pill"><span class="dot"></span> Ready (offline)</div>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"></div>
+        <div>
+          <h1>Fake Job Detector</h1>
         </div>
-
-        <div class="hero">
-            <div class="card main">
-                <div class="title">
-                    <div>
-                        <h2>Analyze a job post</h2>
-                        <p class="subtitle">
-                            Paste a job post to get an instant Scam-Risk score.
-                            Helps you spot suspicious listings before you apply or share personal details.
-                        </p>
-                    </div>
-
-                    <div class="actions">
-                        <button class="btn" id="demoBtn" type="button">Use demo text</button>
-                        <button class="btn" id="clearBtn" type="button">Clear</button>
-                        <button class="btn primary btn-predict" id="predictBtn" type="button">Predict</button>
-
-                    </div>
-
-                </div>
-
-                <div class="grid">
-                    <div class="textareaWrap">
-                        <textarea id="txt" placeholder="Paste job post text here..."></textarea>
-                        <div class="counter">
-                            <span id="count">0 chars</span>
-                            <span>•</span>
-                            <span id="status">Waiting</span>
-                        </div>
-                    </div>
-
-                    <div class="hint">
-                        Tip: include salary/benefits lines + contact method + requirements. More text usually = better
-                        signal.
-                    </div>
-                </div>
-
-                <div class="footer">
-                    <span>✓ Scam-Risk Score updates instantly</span>
-                    <span>ⓘ Verify employers via official sites</span>
-                </div>
-
-
-            </div>
-
-            <div class="card side">
-                <div class="result" id="resultCard">
-                    <div class="badge" id="badge">No prediction yet</div>
-                    <div class="verdict" id="verdict">—</div>
-                    <div class="meta">
-                        <span>Prob(fake): <b id="prob">—</b></span>
-                        <span>•</span>
-                        <span>Label: <b id="label">—</b></span>
-                    </div>
-
-                    <div class="bar">
-                        <div class="fill" id="fill"></div>
-                    </div>
-
-                    <div class="hint" id="explain">
-                        Paste text and click <b>Predict</b>.
-                    </div>
-                </div>
-
-                <div class="tips">
-                    <b>Common red flags</b>
-                    <ul>
-                        <li>“Easy money”, “no experience”, “urgent hire” spammy tone</li>
-                        <li>Asks for fees, deposits, or personal banking info</li>
-                        <li>Only WhatsApp/Telegram contact + no company trace</li>
-                        <li>Unrealistic salary for minimal requirements</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+      </div>
+      <div class="pill"><span class="dot"></span> Ready (offline)</div>
     </div>
+
+    <div class="hero">
+      <div class="card main">
+        <div class="title">
+          <div>
+            <h2>Analyze a job post</h2>
+            <p class="subtitle">
+              Paste a job post to get an instant Scam-Risk score.
+              Helps you spot suspicious listings before you apply or share personal details.
+            </p>
+          </div>
+
+          <div class="actions">
+            <button class="btn" id="demoBtn" type="button">Use demo text</button>
+            <button class="btn" id="clearBtn" type="button">Clear</button>
+            <button class="btn primary btn-predict" id="predictBtn" type="button">Predict</button>
+
+          </div>
+
+        </div>
+
+        <div class="grid">
+          <div class="textareaWrap">
+            <textarea id="txt" placeholder="Paste job post text here..."></textarea>
+            <div class="counter">
+              <span id="count">0 chars</span>
+              <span>•</span>
+              <span id="status">Waiting</span>
+            </div>
+          </div>
+
+          <div class="hint">
+            Tip: include salary/benefits lines + contact method + requirements. More text usually = better
+            signal.
+          </div>
+        </div>
+
+        <div class="footer">
+          <span>✓ Scam-Risk Score updates instantly</span>
+          <span>ⓘ Verify employers via official sites</span>
+        </div>
+
+
+      </div>
+
+      <div class="card side">
+        <div class="result" id="resultCard">
+          <div class="badge" id="badge">No prediction yet</div>
+          <div class="verdict" id="verdict">—</div>
+          <div class="meta">
+            <span>Scam-Risk: <b id="prob">—</b></span>
+            <span>•</span>
+            <span>Label: <b id="label">—</b></span>
+          </div>
+
+          <div class="bar">
+            <div class="fill" id="fill"></div>
+          </div>
+
+          <div class="hint" id="explain">
+            Paste text and click <b>Predict</b>.
+          </div>
+        </div>
+
+        <div class="tips">
+          <b>Common red flags</b>
+          <ul>
+            <li>“Easy money”, “no experience”, “urgent hire” spammy tone</li>
+            <li>Asks for fees, deposits, or personal banking info</li>
+            <li>Only WhatsApp/Telegram contact + no company trace</li>
+            <li>Unrealistic salary for minimal requirements</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    <div class="insights" id="insights" style="display:none;">
+      <div class="insights-head">
+        <h3>Insights</h3>
+        <p>Extra checks to explain why a post looks safe or suspicious.</p>
+      </div>
+
+      <div class="insights-grid">
+        <!-- Skill Match / Inconsistency -->
+        <section class="mini" id="skillCard">
+          <h3>Skill Consistency</h3>
+          <div class="row">
+            <div><b>Role:</b> <span id="roleGuess">-</span></div>
+            <div><b>Mismatch:</b> <span id="mismatchScore">-</span></div>
+            <div><b>Status:</b> <span id="mismatchFlag">-</span></div>
+          </div>
+          <div class="chips" id="skillsFound"></div>
+          <ul class="reasons" id="skillReasons"></ul>
+        </section>
+
+        <!-- Salary Anomaly "Bomb" -->
+        <section class="mini" id="salaryCard">
+          <h3>Salary Anomaly</h3>
+
+          <div class="salary-top">
+            <div class="zone-pill" id="salaryZonePill">NO SALARY</div>
+            <div class="salary-label" id="salaryLabel">-</div>
+          </div>
+
+          <div class="bomb-wrap">
+            <div class="bomb-gauge" id="bombGauge" style="--pct:0;">
+              <div class="bomb-arc"></div>
+              <div class="bomb-pointer"></div>
+              <div class="bomb-center">
+                <div class="bomb-pct" id="salaryPct">0%</div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="bandline" id="salaryBandText"></div>
+
+          <ul class="reasons" id="salaryReasons"></ul>
+        </section>
+      </div>
+    </div>
+  </div>
 
 <script>
   const txt = document.getElementById("txt");
@@ -112,52 +158,179 @@
   const fill = document.getElementById("fill");
   const explain = document.getElementById("explain");
 
+  // Insights container
+  const insights = document.getElementById("insights");
+
+  // Demo text
   const demoText =
 `WORK FROM HOME – EARN DAILY!
 No experience needed. Limited seats. Quick money.
 Contact on WhatsApp/Telegram for onboarding.
 Pay a small registration fee to activate your account.`;
 
-  function fmt(p) { return (p * 100).toFixed(1) + "%"; }
+  function fmtPct(p) { return (p * 100).toFixed(1) + "%"; }
   function setStatus(s) { statusEl.textContent = s; }
 
-  function updateCount() {
-    count.textContent = `${txt.value.length} chars`;
+  function clamp01(x) {
+    x = Number(x);
+    if (Number.isNaN(x)) return 0;
+    return Math.max(0, Math.min(1, x));
   }
-  txt.addEventListener("input", updateCount);
-  updateCount();
 
-  clearBtn.onclick = () => {
-    txt.value = "";
-    updateCount();
-    setStatus("Waiting");
-    badge.textContent = "No prediction yet";
-    verdict.textContent = "—";
-    prob.textContent = "—";
-    label.textContent = "—";
-    fill.style.width = "0%";
-    explain.innerHTML = `Paste text and click <b>Predict</b>.`;
-  };
+  function updateCount() {
+    count.textContent = (txt.value.length || 0) + " chars";
+  }
 
-  demoBtn.onclick = () => {
-    txt.value = demoText;
-    updateCount();
-    setStatus("Demo loaded");
-  };
+  // ---------- UI helpers ----------
+  function setList(ulEl, items) {
+    ulEl.innerHTML = "";
+    (items || []).forEach(t => {
+      const li = document.createElement("li");
+      li.textContent = t;
+      ulEl.appendChild(li);
+    });
+  }
 
-  predictBtn.onclick = async () => {
-    const text = txt.value.trim();
+  function setChips(container, items) {
+    container.innerHTML = "";
+    (items || []).slice(0, 14).forEach(s => {
+      const span = document.createElement("span");
+      span.className = "chip";
+      span.textContent = s;
+      container.appendChild(span);
+    });
+  }
+
+  // ---------- Render: Insights (Skill + Salary) ----------
+  function renderSkillSalary(data) {
+    if (insights) insights.style.display = "block";
+
+    // ---- Skill card ----
+    const sc = data.skill_check;
+    const skillCard = document.getElementById("skillCard");
+
+    if (sc && skillCard) {
+      skillCard.style.display = "block";
+
+      const roleGuess = document.getElementById("roleGuess");
+      const mismatchScore = document.getElementById("mismatchScore");
+      const mismatchFlag = document.getElementById("mismatchFlag");
+      const skillsFound = document.getElementById("skillsFound");
+      const skillReasons = document.getElementById("skillReasons");
+
+      if (roleGuess) {
+        roleGuess.textContent = `${sc.role_guess} (${Math.round((sc.role_confidence || 0) * 100)}%)`;
+      }
+
+      const ms = (sc.mismatch_score == null) ? null : Number(sc.mismatch_score);
+
+      if (mismatchScore) {
+        mismatchScore.textContent = (ms == null) ? "N/A" : ms.toFixed(2);
+      }
+
+      if (mismatchFlag) {
+        mismatchFlag.textContent =
+          (ms == null) ? "—" :
+          (ms >= 0.70) ? "⚠️ MISMATCH" :
+          (ms >= 0.50) ? "⚠️ CHECK" :
+          "✅ OK";
+      }
+
+      if (skillsFound) {
+        const chips = (sc.off_role_skills && sc.off_role_skills.length)
+          ? sc.off_role_skills
+          : sc.skills_found;
+        setChips(skillsFound, chips);
+      }
+
+      if (skillReasons) {
+        const msg =
+          (ms == null) ? "Mismatch check skipped (low evidence)."
+          : (ms >= 0.70) ? "Skills look mismatched for this role."
+          : (ms >= 0.50) ? "Skills look partially mismatched — needs review."
+          : "Skills look broadly consistent for this role.";
+        setList(skillReasons, [msg]);
+      }
+    } else if (skillCard) {
+      skillCard.style.display = "none";
+    }
+
+    // ---- Salary card ----
+    const sal = data.salary_check;
+    const salaryCard = document.getElementById("salaryCard");
+
+    if (sal && salaryCard) {
+      salaryCard.style.display = "block";
+
+      const pill = document.getElementById("salaryZonePill");
+      const salaryLabel = document.getElementById("salaryLabel");
+      const bombGauge = document.getElementById("bombGauge");
+      const salaryPct = document.getElementById("salaryPct");
+      const salaryBandText = document.getElementById("salaryBandText");
+      const salaryReasons = document.getElementById("salaryReasons");
+
+      const zone = String(sal.zone || "NO_SALARY").toUpperCase();
+
+      if (pill) {
+        pill.className = "zone-pill";
+        pill.textContent = zone;
+        if (zone === "GREEN") pill.classList.add("green");
+        else if (zone === "YELLOW") pill.classList.add("yellow");
+        else if (zone === "RED") pill.classList.add("red");
+      }
+
+      if (salaryLabel) salaryLabel.textContent = sal.ui?.label || "-";
+
+      const pct = sal.salary_parsed ? (sal.ui?.gauge_pct ?? 0) : 0;
+      if (salaryPct) salaryPct.textContent = `${pct}%`;
+      if (bombGauge) bombGauge.style.setProperty("--pct", pct);
+
+      if (salaryBandText) {
+        if (sal.salary_parsed) {
+          salaryBandText.textContent =
+            `Offer ₹${sal.offered_min}–₹${sal.offered_max}/mo • Market ₹${sal.market_min}–₹${sal.market_max} • High-end ≤ ₹${sal.high_end_max}`;
+        } else {
+          salaryBandText.textContent = "No salary detected in the post.";
+        }
+      }
+
+      if (salaryReasons) setList(salaryReasons, sal.reasons);
+    } else if (salaryCard) {
+      salaryCard.style.display = "none";
+    }
+  }
+
+  // ---------- Render: Main result card ----------
+  function renderMain(probFake) {
+    const p = clamp01(probFake);
+    prob.textContent = fmtPct(p);
+    fill.style.width = (p * 100).toFixed(1) + "%";
+
+    if (p >= 0.70) {
+      badge.textContent = "High risk detected";
+      verdict.textContent = "Likely Fake";
+      label.textContent = "FAKE";
+      explain.textContent = "High scam-risk predicted. Review the red flags carefully before applying.";
+    } else {
+      badge.textContent = "Low risk detected";
+      verdict.textContent = "Likely Real";
+      label.textContent = "REAL";
+      explain.textContent = "Low scam-risk predicted. Still verify via official sources.";
+    }
+  }
+
+  // ---------- API call ----------
+  async function doPredict() {
+    const text = (txt.value || "").trim();
     if (!text) {
       setStatus("Paste text first");
-      alert("Paste a job post first.");
       return;
     }
 
+    setStatus("Predicting...");
     predictBtn.disabled = true;
-    setStatus("Analyzing...");
 
     try {
-      // 1) Get model probability from backend
       const res = await fetch("/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -165,97 +338,66 @@ Pay a small registration fee to activate your account.`;
       });
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Request failed");
-
-      const p = Number(data.prob_fake); // model prob(fake)
-
-      // 2) Rule-based boosts for UI
-      let risk = p;
-      const t = text.toLowerCase();
-      const reasons = [];
-
-      // ID request rule
-      const idWords = ["aadhaar", "aadhar", "pan", "passport", "driving license", "voter id"];
-      if (idWords.some(w => t.includes(w))) {
-        risk += 0.30;
-        reasons.push("Requests Aadhaar/PAN or other ID details — legitimate employers do not ask for sensitive IDs before an offer.");
+      if (!res.ok) {
+        setStatus("Error");
+        explain.textContent = data.error || "Prediction failed.";
+        predictBtn.disabled = false;
+        return;
       }
 
-      // WhatsApp/Telegram rule
-      if (t.includes("whatsapp") || t.includes("telegram")) {
-        risk += 0.10;
-        reasons.push("WhatsApp/Telegram hiring is off-platform — legitimate employers usually collect CVs via official email or career portals.");
+      renderMain(data.prob_fake);
+      renderSkillSalary(data);
+
+      try {
+        await fetch("/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text, result: data })
+        });
+      } catch (e) {
+        console.warn("Save failed:", e);
       }
 
-      // Fee/payment rule (optional but useful)
-      const feeWords = ["fee", "registration fee", "processing fee", "deposit", "refundable", "payment", "upi"];
-      if (feeWords.some(w => t.includes(w))) {
-        risk += 0.30;
-        reasons.push("Mentions fees/deposits/payments — genuine hiring does not require candidates to pay.");
-      }
-
-      risk = Math.min(1, risk);
-
-      // 3) Update UI with FINAL risk
-      prob.textContent = fmt(risk);
-      fill.style.width = Math.max(2, Math.min(98, risk * 100)) + "%";
-
-      let statusValue = "LIKELY_REAL";
-      let uiMessage = "";
-
-      if (risk >= 0.65) {
-        statusValue = "LIKELY_FAKE";
-        badge.textContent = "High risk detected";
-        verdict.textContent = "Likely Fake";
-        label.textContent = "FAKE";
-        uiMessage = "High scam-risk signals detected. Avoid sharing documents or payments until verified.";
-        explain.innerHTML = uiMessage;
-      } else if (risk >= 0.35) {
-        statusValue = "BORDERLINE";
-        badge.textContent = "Needs verification";
-        verdict.textContent = "Borderline";
-        label.textContent = "CHECK";
-        uiMessage = "Mixed signals. Verify company domain and recruiter identity. Avoid off-platform hiring.";
-
-        const reasonHtml = reasons.length
-          ? `<div class="reasons">
-               <div class="reasons-title">Why this was flagged</div>
-               <ul>${reasons.map(r => `<li>${r}</li>`).join("")}</ul>
-             </div>`
-          : "";
-
-        explain.innerHTML = `${uiMessage}${reasonHtml}`;
-      } else {
-        statusValue = "LIKELY_REAL";
-        badge.textContent = "Low risk signal";
-        verdict.textContent = "Likely Real";
-        label.textContent = "REAL";
-        uiMessage = "Looks more legitimate. Still verify company website, email domain, and role details.";
-        explain.innerHTML = uiMessage;
-      }
-
-      // 4) Save what the UI showed (to SQL Server) via /save
-      await fetch("/save", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          text,
-          status: statusValue,
-          prob_fake: risk,                // store boosted risk (UI score)
-          ui_message: uiMessage,
-          reasons_text: reasons.join("\n")
-        })
-      });
-
-      setStatus("Done ✅");
+      setStatus("Done");
     } catch (e) {
+      console.error(e);
       setStatus("Error");
-      alert(e.message);
+      explain.textContent = "Network/server error. Check Flask terminal.";
     } finally {
       predictBtn.disabled = false;
     }
-  };
+  }
+
+  // ---------- Events ----------
+  txt.addEventListener("input", updateCount);
+  predictBtn.addEventListener("click", doPredict);
+
+  clearBtn.addEventListener("click", () => {
+    txt.value = "";
+    updateCount();
+    setStatus("Waiting");
+
+    badge.textContent = "No prediction yet";
+    verdict.textContent = "—";
+    prob.textContent = "—";
+    label.textContent = "—";
+    fill.style.width = "0%";
+    explain.innerHTML = 'Paste text and click <b>Predict</b>.';
+
+    if (insights) insights.style.display = "none";
+  });
+
+  demoBtn.addEventListener("click", () => {
+    txt.value = demoText;
+    updateCount();
+    setStatus("Demo loaded");
+  });
+
+  // init
+  updateCount();
+  setStatus("Waiting");
 </script>
+
 
 </body>
 
