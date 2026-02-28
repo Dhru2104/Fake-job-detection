@@ -103,41 +103,84 @@ def run_skill_check(text):
 
 # ---------------- SALARY PARSING (FIXED) ----------------
 
-def _num(s: str) -> int:
-    """
-    Parses salary tokens like:
-    90,000   1,20,000   1 20 000   1.20.000   120000   80k   120k   12000/-
-    """
-    s = (s or "").strip().lower()
-    s = s.replace("₹", "").replace("rs", "").strip()
-    s = s.replace("/-", "").strip()
-    # remove commas, spaces, dots used as separators
-    s = re.sub(r"[,\s\.]", "", s)
+def _num(s: str):
+    if s is None:
+        return None
+    s = str(s).strip().lower()
+    if not s:
+        return None
 
+    s = s.replace(",", "")
+    s = re.sub(r"\s+", "", s)
+
+    mult = 1
     if s.endswith("k"):
-        return int(float(s[:-1]) * 1000)
-    return int(float(s))
+        mult = 1000
+        s = s[:-1]
+    elif s.endswith("l") or s.endswith("lac"):
+        mult = 100000
+        s = s[:-1] if s.endswith("l") else s[:-3]
+    elif s.endswith("lakh"):
+        mult = 100000
+        s = s[:-4]
+    elif s.endswith("cr"):
+        mult = 10000000
+        s = s[:-2]
+    elif s.endswith("crore"):
+        mult = 10000000
+        s = s[:-5]
+
+    s = s.strip()
+    if not s:
+        return None
+
+    try:
+        return int(float(s) * mult)
+    except Exception:
+        return None
+
 
 def parse_salary_inr_month(text):
-    t = _alias(_norm(text)).replace("₹", " rs ")
+    raw = text or ""
+    t = _alias(_norm(raw))
+
+    t = t.replace("₹", " inr ")
+    t = re.sub(r"\brs\.?\b", " inr ", t)
+    t = re.sub(r"\binr\b", " inr ", t)
+    t = re.sub(r"\s+", " ", t).strip()
+
     month_hint = bool(re.search(r"\b(per month|monthly|month|stipend|pm)\b", t))
 
-    # RANGE: 90,000 – 1,20,000 per month  OR  80k-120k pm
-    m = re.search(r"\b([\d,\.\s]+k?)\s*(to|\-|–)\s*([\d,\.\s]+k?)\b", t)
-    if m and month_hint:
-        a, b = _num(m.group(1)), _num(m.group(3))
-        return {"ok": True, "min": min(a, b), "max": max(a, b), "confidence": "HIGH"}
+    range_re = re.search(
+        r"(?:\binr\b\s*)?([\d][\d,]*(?:\.\d+)?\s*(?:k|l|lac|lakh|cr|crore)?)\s*"
+        r"(?:to|\-|–|—)\s*"
+        r"(?:\binr\b\s*)?([\d][\d,]*(?:\.\d+)?\s*(?:k|l|lac|lakh|cr|crore)?)",
+        t,
+        flags=re.I
+    )
 
-    # SINGLE: 12,000 per month  OR  stipend: 15k pm
-    m = re.search(r"\b(stipend\s*[:\-]?\s*)?([\d,\.\s]+k?)\s*(per month|monthly|month|pm)\b", t)
-    if m:
-        v = _num(m.group(2))
-        return {"ok": True, "min": v, "max": v, "confidence": "MED"}
+    if range_re and month_hint:
+        a = _num(range_re.group(1))
+        b = _num(range_re.group(2))
+        if a is not None and b is not None:
+            return {"ok": True, "min": min(a, b), "max": max(a, b), "confidence": "HIGH"}
 
-    # RANGE LPA: 6-10 lpa
-    m = re.search(r"\b(\d+(?:\.\d+)?)\s*(to|\-|–)\s*(\d+(?:\.\d+)?)\s*\b(lpa)\b", t)
-    if m:
-        lo, hi = float(m.group(1)), float(m.group(3))
+    single_re = re.search(
+        r"(?:stipend\s*[:\-]?\s*)?(?:\binr\b\s*)?([\d][\d,]*(?:\.\d+)?\s*(?:k|l|lac|lakh|cr|crore)?)\s*"
+        r"(per month|monthly|month|pm)\b",
+        t,
+        flags=re.I
+    )
+
+    if single_re:
+        v = _num(single_re.group(1))
+        if v is not None:
+            return {"ok": True, "min": v, "max": v, "confidence": "MED"}
+
+    lpa_range = re.search(r"\b(\d+(?:\.\d+)?)\s*(to|\-|–|—)\s*(\d+(?:\.\d+)?)\s*\b(lpa)\b", t)
+    if lpa_range:
+        lo = float(lpa_range.group(1))
+        hi = float(lpa_range.group(3))
         return {
             "ok": True,
             "min": int(min(lo, hi) * 100000 / 12),
@@ -145,10 +188,9 @@ def parse_salary_inr_month(text):
             "confidence": "HIGH"
         }
 
-    # SINGLE LPA: 8 lpa / ctc 8 lpa
-    m = re.search(r"\b(ctc\s*)?(\d+(?:\.\d+)?)\s*\b(lpa)\b", t)
-    if m:
-        v = float(m.group(2))
+    lpa_single = re.search(r"\b(ctc\s*)?(\d+(?:\.\d+)?)\s*\b(lpa)\b", t)
+    if lpa_single:
+        v = float(lpa_single.group(2))
         v = int(v * 100000 / 12)
         return {"ok": True, "min": v, "max": v, "confidence": "MED"}
 
