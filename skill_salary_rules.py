@@ -52,18 +52,27 @@ def run_skill_check(text):
     role, conf = guess_role(text)
     found = extract_skills(text)
 
-    role_obj = next((r for r in CFG()["roles"] if r["name"] == role), None)
-    exp = set(role_obj.get("skills", [])) if role_obj else set()
+    # ---- robust role lookup (case/space safe) ----
+    role_norm = _norm(role)
+    role_obj = next((r for r in CFG()["roles"] if _norm(r.get("name", "")) == role_norm), None)
 
-    # Evidence gate
-    enough = (role != "Generic" and conf >= 0.60 and len(found) >= 4 and len(exp) >= 5)
+    # ---- normalize expected skills same way as found ----
+    exp_raw = role_obj.get("skills", []) if role_obj else []
+    exp = { _alias(_norm(s)) for s in exp_raw if _norm(s) }
 
-    # Not enough evidence: return N/A (None)
+    # ---- evidence gate (less fragile; avoids endless N/A) ----
+    # Key idea: if we have a confident role and at least *some* skills, compute mismatch.
+    enough = (role != "Generic" and conf >= 0.55 and len(found) >= 2 and len(exp) >= 2)
+
     if not enough:
         rs = []
-        if len(found) < 4:
+        if role_obj is None:
+            rs.append("Role matched, but role definition not found in rules_catalog.json (name mismatch).")
+        if len(exp) < 2:
+            rs.append("Expected skill list for this role is too small to judge reliably.")
+        if len(found) < 2:
             rs.append("Not enough explicit skills detected to judge mismatch confidently.")
-        if role == "Generic" or conf < 0.60:
+        if role == "Generic" or conf < 0.55:
             rs.append("Role confidence is low, so mismatch detection is conservative.")
         if not rs:
             rs.append("Skill mismatch check skipped (low evidence).")
@@ -78,14 +87,17 @@ def run_skill_check(text):
             "reasons": rs
         }
 
-    off = [s for s in found if s not in exp]
+    # ---- compute mismatch ----
+    off = [s for s in found if _alias(_norm(s)) not in exp]
     score = len(off) / max(1, len(found))
-    flag = score >= 0.70
+
+    # tune threshold a bit: 0.70 is VERY strict; 0.55–0.65 is more usable
+    flag = score >= 0.60
 
     rs = (
         [
-            f"Many detected skills don’t match typical {role} requirements (off-role ratio ≈ {score:.2f}).",
-            "This often happens when posts are copy-pasted or mismatched templates."
+            f"Skills look mismatched for {role} (off-role ratio ≈ {score:.2f}).",
+            "This often happens when the title is one role but responsibilities/skills are another."
         ]
         if flag
         else [f"Skills look broadly consistent for {role}."]
