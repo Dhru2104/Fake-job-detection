@@ -56,12 +56,12 @@ def save():
         cur.execute("""
             INSERT INTO dbo.Predictions
             (JobText, Status, ProbFake, Reasons,
-             RoleGuess, RoleConfidence, SkillMismatchScore, SkillsFound, SkillReasons,
+             RoleGuess, RoleConfidence, SkillsFound, SkillReasons,
              SalaryMin, SalaryMax, SalaryZone, SalaryAnomalyScore, SalaryFlag, SalaryReasons,
              InsightsJson)
             VALUES
             (?, ?, ?, ?,
-             ?, ?, ?, ?, ?,
+             ?, ?, ?, ?,
              ?, ?, ?, ?, ?, ?,
              ?)
         """, (
