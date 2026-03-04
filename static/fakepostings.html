@@ -221,19 +221,14 @@ Pay a small registration fee to activate your account.`;
         roleGuess.textContent = `${sc.role_guess} (${Math.round((sc.role_confidence || 0) * 100)}%)`;
       }
 
-      const ms = (sc.mismatch_score == null) ? null : Number(sc.mismatch_score);
-
-      if (mismatchScore) {
-        mismatchScore.textContent = (ms == null) ? "N/A" : ms.toFixed(2);
-      }
-
+      const flag = (sc.flag === true) ? true : (sc.flag === false) ? false : null;
       if (mismatchFlag) {
         mismatchFlag.textContent =
-          (ms == null) ? "—" :
-          (ms >= 0.70) ? "⚠️ MISMATCH" :
-          (ms >= 0.50) ? "⚠️ CHECK" :
-          "✅ OK";
-      }
+          (flag === null) ? "—" :
+          (flag === true) ? "⚠️ MISMATCH" :
+          ✅ OK";
+          }
+
 
       if (skillsFound) {
         const chips = (sc.off_role_skills && sc.off_role_skills.length)
@@ -242,17 +237,14 @@ Pay a small registration fee to activate your account.`;
         setChips(skillsFound, chips);
       }
 
-      if (skillReasons) {
-        const msg =
-          (ms == null) ? "Mismatch check skipped (low evidence)."
-          : (ms >= 0.70) ? "Skills look mismatched for this role."
-          : (ms >= 0.50) ? "Skills look partially mismatched — needs review."
-          : "Skills look broadly consistent for this role.";
-        setList(skillReasons, [msg]);
-      }
-    } else if (skillCard) {
-      skillCard.style.display = "none";
-    }
+     if (skillReasons) {
+       const flag = (sc.flag === true) ? true : (sc.flag === false) ? false : null;
+       const msg =
+         (flag === null) ? "Mismatch check skipped (low evidence)."
+         : (flag === true) ? "Skills look mismatched for this role."
+         : "Skills look broadly consistent for this role.";
+       setList(skillReasons, [msg]);
+     }
 
     // ---- Salary card ----
     const sal = data.salary_check;
