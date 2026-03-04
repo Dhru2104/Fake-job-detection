@@ -83,7 +83,7 @@ def run_skill_check(text):
             "skills_found": found,
             "mismatch_score": None,
             "off_role_skills": [],
-            "flag": False,
+            "flag": None,
             "reasons": rs
         }
 
