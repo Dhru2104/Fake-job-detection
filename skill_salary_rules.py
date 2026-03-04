@@ -96,7 +96,7 @@ def run_skill_check(text):
 
     rs = (
         [
-            f"Skills look mismatched for {role} (off-role ratio ≈ {score:.2f}).",
+             f"Skills look mismatched for {role}.",
             "This often happens when the title is one role but responsibilities/skills are another."
         ]
         if flag
@@ -107,7 +107,6 @@ def run_skill_check(text):
         "role_guess": role,
         "role_confidence": round(conf, 3),
         "skills_found": found,
-        "mismatch_score": round(score, 3),
         "off_role_skills": off,
         "flag": bool(flag),
         "reasons": rs
