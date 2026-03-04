@@ -157,12 +157,10 @@
   const fill = document.getElementById("fill");
   const explain = document.getElementById("explain");
 
-  // Insights container
   const insights = document.getElementById("insights");
 
-  // Demo text
   const demoText =
-`WORK FROM HOME – EARN DAILY!
+`WORK FROM HOME - EARN DAILY!
 No experience needed. Limited seats. Quick money.
 Contact on WhatsApp/Telegram for onboarding.
 Pay a small registration fee to activate your account.`;
@@ -180,7 +178,6 @@ Pay a small registration fee to activate your account.`;
     count.textContent = (txt.value.length || 0) + " chars";
   }
 
-  // ---------- UI helpers ----------
   function setList(ulEl, items) {
     ulEl.innerHTML = "";
     (items || []).forEach(t => {
@@ -212,7 +209,6 @@ Pay a small registration fee to activate your account.`;
       skillCard.style.display = "block";
 
       const roleGuess = document.getElementById("roleGuess");
-      const mismatchScore = document.getElementById("mismatchScore");
       const mismatchFlag = document.getElementById("mismatchFlag");
       const skillsFound = document.getElementById("skillsFound");
       const skillReasons = document.getElementById("skillReasons");
@@ -222,29 +218,31 @@ Pay a small registration fee to activate your account.`;
       }
 
       const flag = (sc.flag === true) ? true : (sc.flag === false) ? false : null;
+
       if (mismatchFlag) {
         mismatchFlag.textContent =
           (flag === null) ? "—" :
           (flag === true) ? "⚠️ MISMATCH" :
-          ✅ OK";
-          }
-
+          "✅ OK";
+      }
 
       if (skillsFound) {
-        const chips = (sc.off_role_skills && sc.off_role_skills.length)
+        const chips = (flag === true && sc.off_role_skills && sc.off_role_skills.length)
           ? sc.off_role_skills
-          : sc.skills_found;
+          : (sc.skills_found || []);
         setChips(skillsFound, chips);
       }
 
-     if (skillReasons) {
-       const flag = (sc.flag === true) ? true : (sc.flag === false) ? false : null;
-       const msg =
-         (flag === null) ? "Mismatch check skipped (low evidence)."
-         : (flag === true) ? "Skills look mismatched for this role."
-         : "Skills look broadly consistent for this role.";
-       setList(skillReasons, [msg]);
-     }
+      if (skillReasons) {
+        setList(skillReasons, (sc.reasons && sc.reasons.length) ? sc.reasons : [
+          (flag === null) ? "Mismatch check skipped (low evidence)."
+          : (flag === true) ? "Skills look mismatched for this role."
+          : "Skills look broadly consistent for this role."
+        ]);
+      }
+    } else if (skillCard) {
+      skillCard.style.display = "none";
+    }
 
     // ---- Salary card ----
     const sal = data.salary_check;

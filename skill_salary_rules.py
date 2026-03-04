@@ -29,7 +29,13 @@ def SKILL_RE():
     return re.compile(rf"\b({'|'.join(parts)})\b", re.I) if parts else re.compile(r"$^")
 
 def extract_skills(text):
-    hits = SKILL_RE().findall(_alias(_norm(text)))
+    t = _alias(_norm(text))
+
+    # ✅ treat punctuation/separators as spaces so regex matches reliably
+    t = re.sub(r"[,/|;:()\[\]{}]+", " ", t)
+    t = re.sub(r"\s+", " ", t).strip()
+
+    hits = SKILL_RE().findall(t)
     return sorted({re.sub(r"\s+", " ", h.strip().lower()) for h in hits})
 
 def guess_role(text):
@@ -81,7 +87,6 @@ def run_skill_check(text):
             "role_guess": role,
             "role_confidence": round(conf, 3),
             "skills_found": found,
-            "mismatch_score": None,
             "off_role_skills": [],
             "flag": None,
             "reasons": rs

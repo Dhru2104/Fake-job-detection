@@ -10,6 +10,8 @@
     "react.js": "react",
     "nodejs": "node",
     "node.js": "node",
+    "targets": "target",
+    "target": "target",
     "js": "javascript",
     "pm": "per month",
     "p.m.": "per month",
@@ -68,7 +70,7 @@
     {
       "name": "Sales",
       "keywords": ["sales", "sales associate", "sales executive", "business development", "bde", "bd executive", "telecalling", "telesales"],
-      "skills": ["crm", "lead generation", "cold calling", "negotiation"]
+      "skills": ["crm", "lead generation", "cold calling", "negotiation", "follow ups", "communication"]
     },
     {
       "name": "Generic",
